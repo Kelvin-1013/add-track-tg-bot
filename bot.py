@@ -75,7 +75,7 @@ async def send_stats_update(context: ContextTypes.DEFAULT_TYPE):
             "🚀 *Presale Statistics Update* 🚀\n\n"
             f"💰 Total Buyers: {total_buyers}\n"
             f"💰 Tokens Sold: {stats.get('soldTokenAmount', 0):,.2f}\n"
-            f"��� Total SOL Received: {stats.get('receivedSolAmount', 0):,.2f} SOL\n"
+            f"💎 Total SOL Received: {stats.get('receivedSolAmount', 0):,.2f} SOL\n"
             f"📊 Progress: {(stats.get('soldTokenAmount', 0) / stats.get('hardcapAmount', 1) * 100):,.1f}%\n\n"
             f"🎯 Hardcap: {stats.get('hardcapAmount', 0):,.2f}\n"
             f"💫 Price per Token: {stats.get('pricePerToken', 0):,.6f} SOL\n"
@@ -158,16 +158,36 @@ async def welcome_new_member(update: Update, context: ContextTypes.DEFAULT_TYPE)
                 welcome_message = f"Hi {username}!\n\n{welcome_message}"
                 
                 try:
+                    # Get presale stats
+                    stats = await fetch_presale_stats()
+                    total_buyers = await get_total_buyers()
+                    
+                    if stats:
+                        stats_message = (
+                            "\n\n🚀 *Current Presale Status* 🚀\n\n"
+                            f"💰 Total Buyers: {total_buyers}\n"
+                            f"💰 Tokens Sold: {stats.get('soldTokenAmount', 0):,.2f}\n"
+                            f"💎 Total SOL Received: {stats.get('receivedSolAmount', 0):,.2f} SOL\n"
+                            f"📊 Progress: {(stats.get('soldTokenAmount', 0) / stats.get('hardcapAmount', 1) * 100):,.1f}%\n\n"
+                            f"🎯 Hardcap: {stats.get('hardcapAmount', 0):,.2f}\n"
+                            f"💫 Price per Token: {stats.get('pricePerToken', 0):,.6f} SOL"
+                        )
+                        welcome_message += stats_message
+                    
                     # Get random banner
                     banner_path = get_random_banner()
                     if banner_path:
                         await update.message.reply_photo(
                             photo=open(banner_path, 'rb'),
-                            caption=welcome_message
+                            caption=welcome_message,
+                            parse_mode='Markdown'
                         )
                     else:
                         # Send text-only message if no banner
-                        await update.message.reply_text(welcome_message)
+                        await update.message.reply_text(
+                            welcome_message,
+                            parse_mode='Markdown'
+                        )
                     
                     # Update last message time
                     last_message_time = current_time
@@ -227,15 +247,13 @@ def main():
         application.add_error_handler(error_handler)
 
         # Add job for periodic stats updates
-        try:
-            job_queue = application.job_queue
-            if job_queue:
-                job_queue.run_repeating(send_stats_update, interval=STATS_INTERVAL, first=10)
-                logger.info("Successfully set up periodic stats updates")
-            else:
-                logger.error("Job queue is not available")
-        except Exception as job_error:
-            logger.error(f"Failed to set up job queue: {str(job_error)}")
+        application.job_queue.run_repeating(
+            send_stats_update,
+            interval=STATS_INTERVAL,
+            first=10,
+            name='periodic_stats'
+        )
+        logger.info("Successfully set up periodic stats updates")
 
         # Ensure data directory exists
         os.makedirs('./data', exist_ok=True)
