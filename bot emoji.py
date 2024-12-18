@@ -27,6 +27,19 @@ last_message_time = 0
 MESSAGE_COOLDOWN = 100  # seconds
 STATS_INTERVAL = 300  # 5 minutes in seconds
 
+# Add these constants at the top with other constants
+ANIMATED_EMOJI = {
+    "rocket": "🚀",
+    "money_bag": "💰",
+    "gem": "💎",
+    "chart": "📊",
+    "target": "🎯",
+    "sparkles": "✨",
+    "clock": "🕒",
+    "wave": "👋",
+    "star": "⭐️"
+}
+
 # MongoDB connection
 def get_database() -> Database:
     """Get MongoDB database connection"""
@@ -70,16 +83,16 @@ async def send_stats_update(context: ContextTypes.DEFAULT_TYPE):
             logger.error("Failed to fetch presale statistics")
             return
 
-        # Format the statistics message
+        # Format the statistics message with HTML formatting
         message = (
-            "🚀 *Presale Statistics Update* 🚀\n\n"
-            f"💰 Total Buyers: {total_buyers}\n"
-            f"💰 Tokens Sold: {stats.get('soldTokenAmount', 0):,.2f}\n"
-            f"💎 Total SOL Received: {stats.get('receivedSolAmount', 0):,.2f} SOL\n"
-            f"📊 Progress: {(stats.get('soldTokenAmount', 0) / stats.get('hardcapAmount', 1) * 100):,.1f}%\n\n"
-            f"🎯 Hardcap: {stats.get('hardcapAmount', 0):,.2f}\n"
-            f"💫 Price per Token: {stats.get('pricePerToken', 0):,.6f} SOL\n"
-            f"\nLast Updated: {datetime.now().strftime('%Y-%m-%d %H:%M:%S UTC')}"
+            f"{ANIMATED_EMOJI['rocket']} <b>Presale Statistics Update</b> {ANIMATED_EMOJI['rocket']}\n\n"
+            f"{ANIMATED_EMOJI['money_bag']} <b>Total Buyers:</b> {total_buyers}\n"
+            f"{ANIMATED_EMOJI['money_bag']} <b>Tokens Sold:</b> {stats.get('soldTokenAmount', 0):,.2f}\n"
+            f"{ANIMATED_EMOJI['gem']} <b>Total SOL Received:</b> {stats.get('receivedSolAmount', 0):,.2f} SOL\n"
+            f"{ANIMATED_EMOJI['chart']} <b>Progress:</b> {(stats.get('soldTokenAmount', 0) / stats.get('hardcapAmount', 1) * 100):,.1f}%\n\n"
+            f"{ANIMATED_EMOJI['target']} <b>Hardcap:</b> {stats.get('hardcapAmount', 0):,.2f}\n"
+            f"{ANIMATED_EMOJI['sparkles']} <b>Price per Token:</b> {stats.get('pricePerToken', 0):,.6f} SOL\n"
+            f"\n{ANIMATED_EMOJI['clock']} <i>Last Updated: {datetime.now().strftime('%Y-%m-%d %H:%M:%S UTC')}</i>"
         )
 
         # Send to all groups the bot is in
@@ -88,7 +101,7 @@ async def send_stats_update(context: ContextTypes.DEFAULT_TYPE):
                 await context.bot.send_message(
                     chat_id=chat_id,
                     text=message,
-                    parse_mode='Markdown'
+                    parse_mode='HTML'  # Changed to HTML parse mode
                 )
             except telegram.error.TelegramError as e:
                 logger.error(f"Failed to send stats to group {chat_id}: {str(e)}")
@@ -164,13 +177,13 @@ async def welcome_new_member(update: Update, context: ContextTypes.DEFAULT_TYPE)
                     
                     if stats:
                         stats_message = (
-                            "\n\n🚀 *Current Presale Status* 🚀\n\n"
-                            f"💰 Total Buyers: {total_buyers}\n"
-                            f"💰 Tokens Sold: {stats.get('soldTokenAmount', 0):,.2f}\n"
-                            f"💎 Total SOL Received: {stats.get('receivedSolAmount', 0):,.2f} SOL\n"
-                            f"📊 Progress: {(stats.get('soldTokenAmount', 0) / stats.get('softAmount', 1) * 100):,.7f}%\n\n"
-                            f"🎯 Hardcap: {stats.get('hardcapAmount', 0):,.2f}\n"
-                            f"💫 Price per Token: {stats.get('pricePerToken', 0):,.6f} SOL"
+                            f"\n\n{ANIMATED_EMOJI['rocket']} <b>Current Presale Status</b> {ANIMATED_EMOJI['rocket']}\n\n"
+                            f"{ANIMATED_EMOJI['money_bag']} <b>Total Buyers:</b> {total_buyers}\n"
+                            f"{ANIMATED_EMOJI['money_bag']} <b>Tokens Sold:</b> {stats.get('soldTokenAmount', 0):,.2f}\n"
+                            f"{ANIMATED_EMOJI['gem']} <b>Total SOL Received:</b> {stats.get('receivedSolAmount', 0):,.2f} SOL\n"
+                            f"{ANIMATED_EMOJI['chart']} <b>Progress:</b> {(stats.get('soldTokenAmount', 0) / stats.get('hardcapAmount', 1) * 100):,.1f}%\n\n"
+                            f"{ANIMATED_EMOJI['target']} <b>Hardcap:</b> {stats.get('hardcapAmount', 0):,.2f}\n"
+                            f"{ANIMATED_EMOJI['sparkles']} <b>Price per Token:</b> {stats.get('pricePerToken', 0):,.6f} SOL"
                         )
                         welcome_message += stats_message
                     
@@ -180,13 +193,13 @@ async def welcome_new_member(update: Update, context: ContextTypes.DEFAULT_TYPE)
                         await update.message.reply_photo(
                             photo=open(banner_path, 'rb'),
                             caption=welcome_message,
-                            parse_mode='Markdown'
+                            parse_mode='HTML'  # Changed to HTML parse mode
                         )
                     else:
                         # Send text-only message if no banner
                         await update.message.reply_text(
                             welcome_message,
-                            parse_mode='Markdown'
+                            parse_mode='HTML'  # Changed to HTML parse mode
                         )
                     
                     # Update last message time
