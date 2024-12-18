@@ -172,6 +172,7 @@ async def welcome_new_member(update: Update, context: ContextTypes.DEFAULT_TYPE)
                             f"🎯 Hardcap: {stats.get('hardcapAmount', 0):,.2f}\n"
                             f"💫 Price per Token: {stats.get('pricePerToken', 0):,.6f} SOL"
                             f"💫 [View on Solscan](https://solscan.io/account/8GuUDSZ8XiCxFL9cPjNeJdVedCx6JSsFknv6x2Mc41kV)"
+                            f"💰 [Buy now](https://app.tmonk.net)"
                         )
                         # U Progress: 2,288,800.0000000% f"📊 Progress: {(stats.get('soldTokenAmount', 0) / stats.get('hardcapAmount', 1) * 100):,.1f}%\n\n"
                         welcome_message += stats_message
