@@ -76,12 +76,12 @@ async def send_stats_update(context: ContextTypes.DEFAULT_TYPE):
             f"💰 Total Buyers: {total_buyers}\n"
             f"💰 Tokens Sold: {stats.get('soldTokenAmount', 0):,.2f}\n"
             f"💎 Total SOL Received: {stats.get('receivedSolAmount', 0):,.2f} SOL\n"
-            f"📊 Progress: {(stats.get('soldTokenAmount', 0) / stats.get('hardcapAmount', 1) * 100):,.1f}%\n\n"
+            f"📊 Progress: {(stats.get('soldTokenAmount', 0) / stats.get('softcapAmount', 1) * 100):,.7f}%\n\n"
             f"🎯 Hardcap: {stats.get('hardcapAmount', 0):,.2f}\n"
             f"💫 Price per Token: {stats.get('pricePerToken', 0):,.6f} SOL\n"
+            f"💫 [View on Solscan](https://solscan.io/account/8GuUDSZ8XiCxFL9cPjNeJdVedCx6JSsFknv6x2Mc41kV)"
             f"\nLast Updated: {datetime.now().strftime('%Y-%m-%d %H:%M:%S UTC')}"
         )
-
         # Send to all groups the bot is in
         for chat_id in context.bot_data.get('group_chats', set()):
             try:
@@ -168,10 +168,11 @@ async def welcome_new_member(update: Update, context: ContextTypes.DEFAULT_TYPE)
                             f"💰 Total Buyers: {total_buyers}\n"
                             f"💰 Tokens Sold: {stats.get('soldTokenAmount', 0):,.2f}\n"
                             f"💎 Total SOL Received: {stats.get('receivedSolAmount', 0):,.2f} SOL\n"
-                            f"📊 Progress: {(stats.get('soldTokenAmount', 0) / stats.get('softAmount', 1) * 100):,.7f}%\n\n"
+                            f"📊 Progress: {(stats.get('soldTokenAmount', 0) / stats.get('softcapAmount', 1) * 100):,.7f}%\n\n"
                             f"🎯 Hardcap: {stats.get('hardcapAmount', 0):,.2f}\n"
                             f"💫 Price per Token: {stats.get('pricePerToken', 0):,.6f} SOL"
                         )
+                        # U Progress: 2,288,800.0000000% f"📊 Progress: {(stats.get('soldTokenAmount', 0) / stats.get('hardcapAmount', 1) * 100):,.1f}%\n\n"
                         welcome_message += stats_message
                     
                     # Get random banner
