@@ -168,7 +168,7 @@ async def welcome_new_member(update: Update, context: ContextTypes.DEFAULT_TYPE)
                             f"💰 Total Buyers: {total_buyers}\n"
                             f"💰 Tokens Sold: {stats.get('soldTokenAmount', 0):,.2f}\n"
                             f"💎 Total SOL Received: {stats.get('receivedSolAmount', 0):,.2f} SOL\n"
-                            f"📊 Progress: {(stats.get('soldTokenAmount', 0) / stats.get('hardcapAmount', 1) * 100):,.1f}%\n\n"
+                            f"📊 Progress: {(stats.get('soldTokenAmount', 0) / stats.get('softAmount', 1) * 100):,.7f}%\n\n"
                             f"🎯 Hardcap: {stats.get('hardcapAmount', 0):,.2f}\n"
                             f"💫 Price per Token: {stats.get('pricePerToken', 0):,.6f} SOL"
                         )
