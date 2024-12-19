@@ -19,10 +19,8 @@ logging.basicConfig(
 )
 logger = logging.getLogger(__name__)
 
-# Constants
-# BOT_TOKEN = "7599009031:AAHlE1-9sMGzmbEboe4ONQZENrNcPLrrYNw"
-BOT_TOKEN = "8063156470:AAG0MIHhjA4L_vKqtPr_kKeiPdxG6zTNgHQ"
-MONGODB_URI = "mongodb+srv://kelvin-1013:everysecond1013@cluster0.z54oc.mongodb.net/?retryWrites=true&w=majority&appName=Cluster0"
+BOT_TOKEN = ""
+MONGODB_URI = ""
 last_message_time = 0
 MESSAGE_COOLDOWN = 100  # seconds
 STATS_INTERVAL = 300  # 5 minutes in seconds
@@ -171,6 +169,8 @@ async def welcome_new_member(update: Update, context: ContextTypes.DEFAULT_TYPE)
                             f"📊 Progress: {(stats.get('soldTokenAmount', 0) / stats.get('softcapAmount', 1) * 100):,.7f}%\n\n"
                             f"🎯 Hardcap: {stats.get('hardcapAmount', 0):,.2f}\n"
                             f"💫 Price per Token: {stats.get('pricePerToken', 0):,.6f} SOL"
+                            f"💫 [View on Solscan](https://solscan.io/account/8GuUDSZ8XiCxFL9cPjNeJdVedCx6JSsFknv6x2Mc41kV)"
+                            f"💰 [Buy now](https://app.tmonk.net)"
                         )
                         # U Progress: 2,288,800.0000000% f"📊 Progress: {(stats.get('soldTokenAmount', 0) / stats.get('hardcapAmount', 1) * 100):,.1f}%\n\n"
                         welcome_message += stats_message
