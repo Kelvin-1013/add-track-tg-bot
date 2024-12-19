@@ -19,10 +19,8 @@ logging.basicConfig(
 )
 logger = logging.getLogger(__name__)
 
-# Constants
-# BOT_TOKEN = "7599009031:AAHlE1-9sMGzmbEboe4ONQZENrNcPLrrYNw"
-BOT_TOKEN = "8063156470:AAG0MIHhjA4L_vKqtPr_kKeiPdxG6zTNgHQ"
-MONGODB_URI = "mongodb+srv://kelvin-1013:everysecond1013@cluster0.z54oc.mongodb.net/?retryWrites=true&w=majority&appName=Cluster0"
+BOT_TOKEN = ""
+MONGODB_URI = ""
 last_message_time = 0
 MESSAGE_COOLDOWN = 100  # seconds
 STATS_INTERVAL = 300  # 5 minutes in seconds
